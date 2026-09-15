@@ -7,6 +7,32 @@ type ProblemCardProps = {
 function ProblemCard({ problem }: ProblemCardProps) {
   const [selectedPattern, setSelectedPattern] = useState("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [nextReviewDate, setNextReviewDate] = useState<Date | null>(() => {
+    const saved = localStorage.getItem(`problem-${problem.id}`);
+
+    if (!saved) {
+      return null;
+    }
+
+    const revision = JSON.parse(saved);
+
+    return new Date(revision.nextReview);
+  });
+  function scheduleReview(days: number) {
+    const today = new Date();
+    const nextReview = new Date(today);
+
+    nextReview.setDate(today.getDate() + days);
+
+    setNextReviewDate(nextReview);
+    localStorage.setItem(
+      `problem-${problem.id}`,
+      JSON.stringify({
+        nextReview: nextReview.toISOString(),
+        interval: days,
+      })
+    );
+  }
   return (
     <div>
       <h2>{problem.title}</h2>
@@ -37,6 +63,18 @@ function ProblemCard({ problem }: ProblemCardProps) {
         >
           Open on LeetCode
         </a>
+
+      )}
+      <div>
+        <button onClick={() => scheduleReview(1)}>Forgot</button>
+        <button onClick={() => scheduleReview(3)}>Needed Help</button>
+        <button onClick={() => scheduleReview(7)}>Solved</button>
+        <button onClick={() => scheduleReview(14)}>Easy</button>
+      </div>
+      {nextReviewDate && (
+        <p>
+          Next review: {nextReviewDate.toLocaleDateString()}
+        </p>
       )}
       {isCorrect === false && <p>❌ Try again.</p>}
     </div>
