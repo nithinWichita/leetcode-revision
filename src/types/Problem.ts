@@ -3,7 +3,7 @@ export type Problem = {
   title: string;
   leetcodeUrl: string;
   difficulty: "Easy" | "Medium" | "Hard";
-  patterns: string[];
+  pattern: string;
 
   lastSolved: string | null;
   nextReview: string | null;

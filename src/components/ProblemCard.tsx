@@ -1,10 +1,13 @@
 import type { Problem } from "../types/Problem";
 import { useState } from "react";
+import { patterns } from "../data/patterns";
+
 type ProblemCardProps = {
   problem: Problem;
+  onComplete: () => void;
 };
 
-function ProblemCard({ problem }: ProblemCardProps) {
+function ProblemCard({ problem, onComplete }: ProblemCardProps) {
   const [selectedPattern, setSelectedPattern] = useState("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [nextReviewDate, setNextReviewDate] = useState<Date | null>(() => {
@@ -18,10 +21,27 @@ function ProblemCard({ problem }: ProblemCardProps) {
 
     return new Date(revision.nextReview);
   });
-  function scheduleReview(days: number) {
+  function scheduleReview(result: "forgot" | "help" | "solved" | "easy") {
     const today = new Date();
     const nextReview = new Date(today);
+    const saved = localStorage.getItem(`problem-${problem.id}`);
+    let currentInterval = 0;
 
+    if (saved) {
+      const revision = JSON.parse(saved);
+      currentInterval = revision.interval;
+    }
+    let days = 0;
+
+    if (result === "forgot") {
+      days = 1;
+    } else if (result === "help") {
+      days = currentInterval === 0 ? 3 : Math.max(1, Math.floor(currentInterval / 2));
+    } else if (result === "solved") {
+      days = currentInterval === 0 ? 7 : Math.min(60, currentInterval * 2);
+    } else if (result === "easy") {
+      days = currentInterval === 0 ? 14 : Math.min(60, currentInterval * 3);
+    }
     nextReview.setDate(today.getDate() + days);
 
     setNextReviewDate(nextReview);
@@ -32,6 +52,7 @@ function ProblemCard({ problem }: ProblemCardProps) {
         interval: days,
       })
     );
+    onComplete();
   }
   return (
     <div>
@@ -41,15 +62,16 @@ function ProblemCard({ problem }: ProblemCardProps) {
 
       <select value={selectedPattern} onChange={(e) => setSelectedPattern(e.target.value)}>
         <option>Select a pattern</option>
-        <option>Hash Map</option>
-        <option>Two Pointers</option>
-        <option>Sliding Window</option>
-        <option>Greedy</option>
+        {patterns.map((pattern) => (
+          <option key={pattern} value={pattern}>
+            {pattern}
+          </option>
+        ))}
       </select>
 
       <button
         onClick={() => {
-          setIsCorrect(problem.patterns.includes(selectedPattern));
+          setIsCorrect(problem.pattern === selectedPattern);
         }}
       >
         Check Pattern
@@ -66,10 +88,10 @@ function ProblemCard({ problem }: ProblemCardProps) {
 
       )}
       <div>
-        <button onClick={() => scheduleReview(1)}>Forgot</button>
-        <button onClick={() => scheduleReview(3)}>Needed Help</button>
-        <button onClick={() => scheduleReview(7)}>Solved</button>
-        <button onClick={() => scheduleReview(14)}>Easy</button>
+        <button onClick={() => scheduleReview("forgot")}>Forgot</button>
+        <button onClick={() => scheduleReview("help")}>Needed Help</button>
+        <button onClick={() => scheduleReview("solved")}>Solved</button>
+        <button onClick={() => scheduleReview("easy")}>Easy</button>
       </div>
       {nextReviewDate && (
         <p>
