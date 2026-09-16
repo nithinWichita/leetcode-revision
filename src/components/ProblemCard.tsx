@@ -1,13 +1,15 @@
 import type { Problem } from "../types/Problem";
 import { useState } from "react";
 import { patterns } from "../data/patterns";
+import { getTodayDate } from "../utils/getTodayDate";
 
 type ProblemCardProps = {
   problem: Problem;
+  isNew: boolean;
   onComplete: () => void;
 };
 
-function ProblemCard({ problem, onComplete }: ProblemCardProps) {
+function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   const [selectedPattern, setSelectedPattern] = useState("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [nextReviewDate, setNextReviewDate] = useState<Date | null>(() => {
@@ -52,6 +54,9 @@ function ProblemCard({ problem, onComplete }: ProblemCardProps) {
         interval: days,
       })
     );
+    if (isNew) {
+  localStorage.setItem("lastNewProblemDate", getTodayDate());
+}
     onComplete();
   }
   return (
