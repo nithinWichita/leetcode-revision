@@ -12,6 +12,7 @@ type ProblemCardProps = {
 function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   const [selectedPattern, setSelectedPattern] = useState("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [hasOpenedProblem, setHasOpenedProblem] = useState(false);
   const [nextReviewDate, setNextReviewDate] = useState<Date | null>(() => {
     const saved = localStorage.getItem(`problem-${problem.id}`);
 
@@ -55,8 +56,8 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
       })
     );
     if (isNew) {
-  localStorage.setItem("lastNewProblemDate", getTodayDate());
-}
+      localStorage.setItem("lastNewProblemDate", getTodayDate());
+    }
     onComplete();
   }
   return (
@@ -87,17 +88,20 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
           href={problem.leetcodeUrl}
           target="_blank"
           rel="noreferrer"
+          onClick={() => setHasOpenedProblem(true)}
         >
           Open on LeetCode
         </a>
 
       )}
-      <div>
-        <button onClick={() => scheduleReview("forgot")}>Forgot</button>
-        <button onClick={() => scheduleReview("help")}>Needed Help</button>
-        <button onClick={() => scheduleReview("solved")}>Solved</button>
-        <button onClick={() => scheduleReview("easy")}>Easy</button>
-      </div>
+      {hasOpenedProblem && (
+        <div>
+          <button onClick={() => scheduleReview("forgot")}>Forgot</button>
+          <button onClick={() => scheduleReview("help")}>Needed Help</button>
+          <button onClick={() => scheduleReview("solved")}>Solved</button>
+          <button onClick={() => scheduleReview("easy")}>Easy</button>
+        </div>
+      )}
       {nextReviewDate && (
         <p>
           Next review: {nextReviewDate.toLocaleDateString()}
