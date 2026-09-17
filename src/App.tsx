@@ -3,62 +3,64 @@ import ProblemCard from "./components/ProblemCard";
 import { isProblemDue } from "./utils/isProblemDue";
 import { isNewProblem } from "./utils/isNewProblem";
 import { useState } from "react";
-import { getProblemInterval } from "./utils/getProblemInterval";
 import { getTodayDate } from "./utils/getTodayDate";
-import { getReviewBatch } from "./utils/getReviewBatch";
-
+import { getDailyBatch } from "./utils/getDailyBatch";
 function App() {
   const [, setRefreshKey] = useState(0);
   const today = getTodayDate();
-  const lastNewProblemDate = localStorage.getItem("lastNewProblemDate");
-  const canDoNewProblem = lastNewProblemDate !== today;
-  const savedBatch = getReviewBatch();
+  const batchDate = localStorage.getItem("dailyBatchDate");
+  const savedDailyBatch = getDailyBatch();
+  const isNewDay = batchDate !== today;
 
-  const unfinishedBatch = savedBatch.filter((id) =>
-    isProblemDue(id)
+  const hasNewProblems = problems.some((problem) =>
+    isNewProblem(problem.id)
   );
-  const batchProblems = problems.filter((problem) =>
-    unfinishedBatch.includes(problem.id)
+  const dueReviewProblems = problems.filter(
+    (problem) =>
+      !isNewProblem(problem.id) &&
+      isProblemDue(problem.id)
   );
-  let reviewProblems;
+  const reviewLimit = hasNewProblems ? 4 : 5;
+  const reviewProblems = dueReviewProblems.slice(0, reviewLimit);
+  const newProblemLimit = 5 - reviewProblems.length;
 
-  if (savedBatch.length > 0 && batchProblems.length > 0) {
-    reviewProblems = batchProblems;
-  } else {
-    reviewProblems = problems
-      .filter(
-        (problem) =>
-          !isNewProblem(problem.id) &&
-          isProblemDue(problem.id)
-      )
-      .sort(
-        (a, b) =>
-          getProblemInterval(a.id) - getProblemInterval(b.id)
-      )
-      .slice(0, 4);
 
-    const batchIds = reviewProblems.map((problem) => problem.id);
+  const newProblems = problems
+    .filter((problem) => isNewProblem(problem.id))
+    .slice(0, newProblemLimit);
 
+  const newBatch = [...newProblems, ...reviewProblems];
+  if (isNewDay) {
     localStorage.setItem(
-      "reviewBatch",
-      JSON.stringify(batchIds)
+      "dailyBatch",
+      JSON.stringify(newBatch.map((problem) => problem.id))
     );
+
+    localStorage.setItem("dailyBatchDate", today);
   }
-
-
-  const newProblems = canDoNewProblem
-    ? problems
-      .filter((problem) => isNewProblem(problem.id))
-      .slice(0, 1)
-    : [];
-
-  const todaysProblems = [...reviewProblems, ...newProblems];
+  const dailyBatchIds = isNewDay
+    ? newBatch.map((problem) => problem.id)
+    : savedDailyBatch;
+  const todaysProblems = dailyBatchIds
+  .map((id) => problems.find((problem) => problem.id === id))
+  .filter((problem) => problem !== undefined);
   return (
     <div>
       <h1>LeetCode Revision</h1>
 
       {todaysProblems.map((problem) => (
-        <ProblemCard key={problem.id} problem={problem} isNew={isNewProblem(problem.id)} onComplete={() => setRefreshKey((old) => old + 1)} />
+        <ProblemCard key={problem.id} problem={problem} onComplete={() => {
+  const updatedBatch = dailyBatchIds.filter(
+    (id) => id !== problem.id
+  );
+
+  localStorage.setItem(
+    "dailyBatch",
+    JSON.stringify(updatedBatch)
+  );
+
+  setRefreshKey((old) => old + 1);
+}} />
       ))}
     </div>
   );
