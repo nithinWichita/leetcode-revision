@@ -5,6 +5,7 @@ import { isNewProblem } from "./utils/isNewProblem";
 import { useState } from "react";
 import { getTodayDate } from "./utils/getTodayDate";
 import { getDailyBatch } from "./utils/getDailyBatch";
+import "./App.css";
 function App() {
   const [, setRefreshKey] = useState(0);
   const today = getTodayDate();
@@ -42,25 +43,29 @@ function App() {
     ? newBatch.map((problem) => problem.id)
     : savedDailyBatch;
   const todaysProblems = dailyBatchIds
-  .map((id) => problems.find((problem) => problem.id === id))
-  .filter((problem) => problem !== undefined);
+    .map((id) => problems.find((problem) => problem.id === id))
+    .filter((problem) => problem !== undefined);
   return (
-    <div>
+    <div className="app">
       <h1>LeetCode Revision</h1>
 
       {todaysProblems.map((problem) => (
-        <ProblemCard key={problem.id} problem={problem} onComplete={() => {
-  const updatedBatch = dailyBatchIds.filter(
-    (id) => id !== problem.id
-  );
+        <ProblemCard
+          key={problem.id}
+          problem={problem}
+          isNew={isNewProblem(problem.id)}
+          onComplete={() => {
+            const updatedBatch = dailyBatchIds.filter(
+              (id) => id !== problem.id
+            );
 
-  localStorage.setItem(
-    "dailyBatch",
-    JSON.stringify(updatedBatch)
-  );
+            localStorage.setItem(
+              "dailyBatch",
+              JSON.stringify(updatedBatch)
+            );
 
-  setRefreshKey((old) => old + 1);
-}} />
+            setRefreshKey((old) => old + 1);
+          }} />
       ))}
     </div>
   );

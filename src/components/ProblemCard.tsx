@@ -4,10 +4,11 @@ import { patterns } from "../data/patterns";
 
 type ProblemCardProps = {
   problem: Problem;
+  isNew: boolean;
   onComplete: () => void;
 };
 
-function ProblemCard({ problem, onComplete }: ProblemCardProps) {
+function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   const [selectedPattern, setSelectedPattern] = useState("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasOpenedProblem, setHasOpenedProblem] = useState(false);
@@ -75,42 +76,60 @@ function ProblemCard({ problem, onComplete }: ProblemCardProps) {
   }
 
   return (
-    <div>
-      <h2>{problem.title}</h2>
-      <p>{problem.difficulty}</p>
+    < div className="problem-card">
+      <div className="problem-header">
+        <h2>{problem.title}</h2>
 
-      <p>What pattern would you use?</p>
+        <span className="problem-type">
+          {isNew ? "New" : "Review"}
+        </span>
+      </div>
+      <p className="difficulty">
+        {problem.difficulty}
+      </p>
+      <div className="pattern-section">
 
-      <select
-        value={selectedPattern}
-        onChange={(e) => {
-          setSelectedPattern(e.target.value);
-          setIsCorrect(null);
-        }}
-      >
-        <option value="">Select a pattern</option>
 
-        {patterns.map((pattern) => (
-          <option key={pattern} value={pattern}>
-            {pattern}
-          </option>
-        ))}
-      </select>
+        <p>What pattern would you use?</p>
 
-      <button
-        onClick={() => {
-          setIsCorrect(problem.pattern === selectedPattern);
-        }}
-      >
-        Check Pattern
-      </button>
+        <select
+          className="pattern-select"
+          value={selectedPattern}
+          onChange={(e) => {
+            setSelectedPattern(e.target.value);
+            setIsCorrect(null);
+          }}
+        >
+          <option value="">Select a pattern</option>
 
-      {isCorrect === true && <p>✅ Correct!</p>}
+          {patterns.map((pattern) => (
+            <option key={pattern} value={pattern}>
+              {pattern}
+            </option>
+          ))}
+        </select>
 
-      {isCorrect === false && <p>❌ Try again.</p>}
+        <button
+          className="button"
+          onClick={() => {
+            setIsCorrect(problem.pattern === selectedPattern);
+          }}
+        >
+          Check Pattern
+        </button>
+      </div>
+
+      {isCorrect === true && (
+        <p className="pattern-feedback">✅ Correct!</p>
+      )}
+
+      {isCorrect === false && (
+        <p className="pattern-feedback">❌ Try again.</p>
+      )}
 
       {isCorrect === true && (
         <a
+          className="leetcode-link"
           href={problem.leetcodeUrl}
           target="_blank"
           rel="noreferrer"
@@ -121,27 +140,27 @@ function ProblemCard({ problem, onComplete }: ProblemCardProps) {
       )}
 
       {hasOpenedProblem && (
-        <div>
-          <button onClick={() => scheduleReview("forgot")}>
+        <div className="rating-buttons">
+          <button className="button" onClick={() => scheduleReview("forgot")}>
             Forgot
           </button>
 
-          <button onClick={() => scheduleReview("help")}>
+          <button className="button" onClick={() => scheduleReview("help")}>
             Needed Help
           </button>
 
-          <button onClick={() => scheduleReview("solved")}>
+          <button className="button" onClick={() => scheduleReview("solved")}>
             Solved
           </button>
 
-          <button onClick={() => scheduleReview("easy")}>
+          <button className="button" onClick={() => scheduleReview("easy")}>
             Easy
           </button>
         </div>
       )}
 
       {nextReviewDate && (
-        <p>
+        <p className="next-review">
           Next review: {nextReviewDate.toLocaleDateString()}
         </p>
       )}
