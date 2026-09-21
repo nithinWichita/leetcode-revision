@@ -11,6 +11,9 @@ function App() {
   const today = getTodayDate();
   const batchDate = localStorage.getItem("dailyBatchDate");
   const savedDailyBatch = getDailyBatch();
+  const dailyBatchTotal = Number(
+    localStorage.getItem("dailyBatchTotal") ?? 0
+  );
   const isNewDay = batchDate !== today;
 
   const hasNewProblems = problems.some((problem) =>
@@ -36,6 +39,10 @@ function App() {
       "dailyBatch",
       JSON.stringify(newBatch.map((problem) => problem.id))
     );
+    localStorage.setItem(
+      "dailyBatchTotal",
+      String(newBatch.length)
+    );
 
     localStorage.setItem("dailyBatchDate", today);
   }
@@ -45,10 +52,17 @@ function App() {
   const todaysProblems = dailyBatchIds
     .map((id) => problems.find((problem) => problem.id === id))
     .filter((problem) => problem !== undefined);
+  const solvedToday =
+    dailyBatchTotal - todaysProblems.length;
   return (
     <div className="app">
       <h1>LeetCode Revision</h1>
-
+      <p className="daily-progress">
+        Solved today: {solvedToday} · Remaining: {todaysProblems.length}
+      </p>
+      {todaysProblems.length === 0 && (
+        <p>🎉 You're done for today!</p>
+      )}
       {todaysProblems.map((problem) => (
         <ProblemCard
           key={problem.id}

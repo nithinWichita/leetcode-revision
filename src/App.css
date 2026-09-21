@@ -95,8 +95,12 @@
   display: flex;
   gap: 8px;
   margin-top: 12px;
+  justify-content: center;
 }
-
+.daily-progress {
+  margin-bottom: 24px;
+  font-weight: 600;
+}
 .leetcode-link {
   display: inline-block;
   margin-top: 12px;
