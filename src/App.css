@@ -117,6 +117,12 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+.overall-progress {
+  margin-top: -16px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  opacity: 0.7;
+}
 .daily-progress {
   margin-bottom: 24px;
   font-weight: 600;
