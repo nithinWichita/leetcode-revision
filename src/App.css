@@ -63,6 +63,15 @@
   font-size: 12px;
   font-weight: 600;
 }
+.problem-type.new {
+  background-color: #e8f5e9;
+  border-color: #81c784;
+}
+
+.problem-type.review {
+  background-color: #fff3e0;
+  border-color: #ffb74d;
+}
 
 .problem-card {
   border: 1px solid #ccc;
@@ -76,7 +85,17 @@
   font-weight: 500;
   margin-top: 8px;
 }
+.difficulty.easy {
+  color: #2e7d32;
+}
 
+.difficulty.medium {
+  color: #ed6c02;
+}
+
+.difficulty.hard {
+  color: #d32f2f;
+}
 .pattern-select {
   padding: 8px 10px;
   border: 1px solid #aaa;
@@ -96,6 +115,7 @@
   gap: 8px;
   margin-top: 12px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 .daily-progress {
   margin-bottom: 24px;

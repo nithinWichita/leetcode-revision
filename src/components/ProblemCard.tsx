@@ -80,11 +80,13 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
       <div className="problem-header">
         <h2>{problem.title}</h2>
 
-        <span className="problem-type">
+        <span
+          className={`problem-type ${isNew ? "new" : "review"}`}
+        >
           {isNew ? "New" : "Review"}
         </span>
       </div>
-      <p className="difficulty">
+      <p className={`difficulty ${problem.difficulty.toLowerCase()}`}>
         {problem.difficulty}
       </p>
       <div className="pattern-section">
