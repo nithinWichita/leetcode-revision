@@ -13,11 +13,9 @@ function App() {
   const savedDailyBatch = getDailyBatch();
   const savedDailyBatchTotal =
     localStorage.getItem("dailyBatchTotal");
-
-  const dailyBatchTotal = savedDailyBatchTotal
-    ? Number(savedDailyBatchTotal)
-    : savedDailyBatch.length;
   const isNewDay = batchDate !== today;
+
+
 
   const hasNewProblems = problems.some((problem) =>
     isNewProblem(problem.id)
@@ -37,6 +35,11 @@ function App() {
     .slice(0, newProblemLimit);
 
   const newBatch = [...newProblems, ...reviewProblems];
+  const dailyBatchTotal = isNewDay
+    ? newBatch.length
+    : savedDailyBatchTotal
+      ? Number(savedDailyBatchTotal)
+      : savedDailyBatch.length;
   if (isNewDay) {
     localStorage.setItem(
       "dailyBatch",
