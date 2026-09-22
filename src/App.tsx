@@ -11,9 +11,12 @@ function App() {
   const today = getTodayDate();
   const batchDate = localStorage.getItem("dailyBatchDate");
   const savedDailyBatch = getDailyBatch();
-  const dailyBatchTotal = Number(
-    localStorage.getItem("dailyBatchTotal") ?? 0
-  );
+  const savedDailyBatchTotal =
+    localStorage.getItem("dailyBatchTotal");
+
+  const dailyBatchTotal = savedDailyBatchTotal
+    ? Number(savedDailyBatchTotal)
+    : savedDailyBatch.length;
   const isNewDay = batchDate !== today;
 
   const hasNewProblems = problems.some((problem) =>
