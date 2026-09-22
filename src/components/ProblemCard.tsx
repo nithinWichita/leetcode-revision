@@ -12,7 +12,7 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   const [selectedPattern, setSelectedPattern] = useState("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasOpenedProblem, setHasOpenedProblem] = useState(false);
-
+  const [showPattern, setShowPattern] = useState(false);
   const [nextReviewDate, setNextReviewDate] = useState<Date | null>(() => {
     const saved = localStorage.getItem(`problem-${problem.id}`);
 
@@ -125,11 +125,31 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
         <p className="pattern-feedback">✅ Correct!</p>
       )}
 
-      {isCorrect === false && (
-        <p className="pattern-feedback">❌ Try again.</p>
+      {isCorrect === false && !showPattern && (
+  <p className="pattern-feedback">❌ Try again.</p>
+)}
+      {isCorrect === false && !showPattern && (
+        <button
+          className="button"
+          onClick={() => setShowPattern(true)}
+        >
+          Reveal Pattern
+        </button>
+      )}
+      {showPattern && (
+        <div className="pattern-reveal">
+          <p>
+            Pattern: <strong>{problem.pattern}</strong>
+          </p>
+          {problem.why && (
+            <p>
+              Why: {problem.why}
+            </p>
+          )}
+        </div>
       )}
 
-      {isCorrect === true && (
+      {(isCorrect === true || showPattern) && (
         <a
           className="leetcode-link"
           href={problem.leetcodeUrl}

@@ -6,4 +6,5 @@ export type Problem = {
   leetcodeUrl: string;
   difficulty: "Easy" | "Medium" | "Hard";
   pattern: Pattern;
-};
+  why: string;
+}

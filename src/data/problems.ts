@@ -7,6 +7,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/merge-sorted-array/",
     difficulty: "Easy",
     pattern: "Array / String",
+    why: "Merging from the end uses the arrays' sorted order while avoiding overwriting unread values in the first array.",
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/remove-element/",
     difficulty: "Easy",
     pattern: "Array / String",
+    why: "A read pointer can inspect every value while a write pointer compacts only the values that should remain.",
   },
   {
     id: 3,
@@ -22,6 +24,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
     difficulty: "Easy",
     pattern: "Array / String",
+    why: "Because equal values are adjacent in a sorted array, two pointers can keep one copy of each value in place.",
   },
   {
     id: 4,
@@ -30,6 +33,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Sorted duplicates are adjacent, so a read/write scan can retain at most two copies without extra storage.",
   },
   {
     id: 5,
@@ -37,6 +41,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/majority-element/",
     difficulty: "Easy",
     pattern: "Array / String",
+    why: "A running candidate and counter exploit the guaranteed majority to cancel out all competing values.",
   },
   {
     id: 6,
@@ -44,6 +49,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/rotate-array/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Index manipulation and array reversal move every value to its rotated position using constant extra space.",
   },
   {
     id: 7,
@@ -52,6 +58,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
     difficulty: "Easy",
     pattern: "Array / String",
+    why: "A single scan can track the cheapest earlier price and the best profit available at each later price.",
   },
   {
     id: 8,
@@ -60,6 +67,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Every upward price change can be taken independently, so a greedy scan accumulates all available profit.",
   },
   {
     id: 9,
@@ -67,6 +75,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/jump-game/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "A greedy scan only needs the farthest reachable index to know whether the next position is accessible.",
   },
   {
     id: 10,
@@ -74,6 +83,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/jump-game-ii/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Each jump defines a reachable range, and greedily extending that range yields the fewest jumps.",
   },
   {
     id: 11,
@@ -81,6 +91,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/h-index/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Citation counts can be sorted or bucketed so the number of papers meeting each threshold is easy to compare.",
   },
   {
     id: 12,
@@ -88,6 +99,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/insert-delete-getrandom-o1/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "An array provides random indexing, while a hash map keeps insertions and removals constant time.",
   },
   {
     id: 13,
@@ -95,6 +107,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/product-of-array-except-self/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Prefix and suffix products capture every factor except the current one without division or nested loops.",
   },
   {
     id: 14,
@@ -102,6 +115,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/gas-station/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Tracking total fuel and the current surplus lets a greedy scan reject every impossible start at once.",
   },
   {
     id: 15,
@@ -109,6 +123,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/candy/",
     difficulty: "Hard",
     pattern: "Array / String",
+    why: "Two directional passes enforce the candy rule independently for increasing ratings from each side.",
   },
   {
     id: 16,
@@ -116,6 +131,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/trapping-rain-water/",
     difficulty: "Hard",
     pattern: "Array / String",
+    why: "Water at a position is limited by the shorter boundary, which two pointers can resolve from the outside inward.",
   },
   {
     id: 17,
@@ -123,6 +139,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/roman-to-integer/",
     difficulty: "Easy",
     pattern: "Array / String",
+    why: "Roman values can be scanned locally because a smaller symbol before a larger one is the only subtraction case.",
   },
   {
     id: 18,
@@ -130,6 +147,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/integer-to-roman/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Greedily taking the largest Roman value matches the numeral system's ordered place-value representation.",
   },
   {
     id: 19,
@@ -137,6 +155,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/length-of-last-word/",
     difficulty: "Easy",
     pattern: "Array / String",
+    why: "Scanning backward skips trailing spaces and counts only the final contiguous word.",
   },
   {
     id: 20,
@@ -144,6 +163,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/longest-common-prefix/",
     difficulty: "Easy",
     pattern: "Array / String",
+    why: "The shared prefix can only shrink as each additional string is compared with the current candidate.",
   },
   {
     id: 21,
@@ -151,6 +171,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/reverse-words-in-a-string/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Reversing word order requires only tokenizing or scanning the string while discarding extra spaces.",
   },
   {
     id: 22,
@@ -158,6 +179,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/zigzag-conversion/",
     difficulty: "Medium",
     pattern: "Array / String",
+    why: "Row movement follows a repeating down-and-up cycle, so characters can be distributed by their cycle position.",
   },
   {
     id: 23,
@@ -166,6 +188,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/",
     difficulty: "Easy",
     pattern: "Array / String",
+    why: "Substring search compares a candidate window with the target, directly applying string-scanning techniques.",
   },
   {
     id: 24,
@@ -173,6 +196,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/text-justification/",
     difficulty: "Hard",
     pattern: "Array / String",
+    why: "Each output line is formed by greedily packing words, then distributing the required spaces across its gaps.",
   },
   {
     id: 25,
@@ -180,6 +204,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/valid-palindrome/",
     difficulty: "Easy",
     pattern: "Two Pointers",
+    why: "Two pointers compare mirrored characters while skipping symbols that do not affect the palindrome.",
   },
   {
     id: 26,
@@ -187,6 +212,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/is-subsequence/",
     difficulty: "Easy",
     pattern: "Two Pointers",
+    why: "Pointers advance through both strings so the next required subsequence character is matched in order.",
   },
   {
     id: 27,
@@ -195,6 +221,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/",
     difficulty: "Medium",
     pattern: "Two Pointers",
+    why: "Sorted order tells which pointer to move after comparing the current sum with the target.",
   },
   {
     id: 28,
@@ -202,6 +229,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/container-with-most-water/",
     difficulty: "Medium",
     pattern: "Two Pointers",
+    why: "The shorter boundary limits the area, so moving that pointer is the only way to find a taller limiting side.",
   },
   {
     id: 29,
@@ -209,6 +237,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/3sum/",
     difficulty: "Medium",
     pattern: "Two Pointers",
+    why: "Sorting fixes one value and lets two pointers find complementary pairs while naturally skipping duplicates.",
   },
   {
     id: 30,
@@ -217,6 +246,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/minimum-size-subarray-sum/",
     difficulty: "Medium",
     pattern: "Sliding Window",
+    why: "Positive values make the window sum monotonic as its boundaries move, enabling a linear shrinking window.",
   },
   {
     id: 31,
@@ -225,6 +255,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
     difficulty: "Medium",
     pattern: "Sliding Window",
+    why: "A sliding window and last-seen positions maintain exactly the longest suffix with no repeated character.",
   },
   {
     id: 32,
@@ -233,6 +264,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/substring-with-concatenation-of-all-words/",
     difficulty: "Hard",
     pattern: "Sliding Window",
+    why: "A fixed-size window can compare word frequencies because every valid concatenation contains the same multiset of words.",
   },
   {
     id: 33,
@@ -241,12 +273,14 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/minimum-window-substring/",
     difficulty: "Hard",
     pattern: "Sliding Window",
+    why: "A variable window expands until all required characters are covered, then shrinks to find the minimum valid range.",
   }, {
     id: 34,
     title: "Valid Sudoku",
     leetcodeUrl: "https://leetcode.com/problems/valid-sudoku/",
     difficulty: "Medium",
     pattern: "Matrix",
+    why: "Rows, columns, and boxes each need independent duplicate tracking, which set-based matrix scans provide.",
   },
   {
     id: 35,
@@ -254,6 +288,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/spiral-matrix/",
     difficulty: "Medium",
     pattern: "Matrix",
+    why: "Shrinking row and column boundaries trace each matrix layer in spiral order without revisiting cells.",
   },
   {
     id: 36,
@@ -261,6 +296,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/rotate-image/",
     difficulty: "Medium",
     pattern: "Matrix",
+    why: "Transposing and reversing the square matrix maps every coordinate to its rotated position in place.",
   },
   {
     id: 37,
@@ -268,6 +304,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/set-matrix-zeroes/",
     difficulty: "Medium",
     pattern: "Matrix",
+    why: "Recording affected rows and columns separates detection from mutation so newly written zeroes do not spread incorrectly.",
   },
   {
     id: 38,
@@ -275,12 +312,14 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/game-of-life/",
     difficulty: "Medium",
     pattern: "Matrix",
+    why: "Each cell's next state depends only on its eight neighbors, making local matrix traversal the natural model.",
   }, {
     id: 39,
     title: "Ransom Note",
     leetcodeUrl: "https://leetcode.com/problems/ransom-note/",
     difficulty: "Easy",
     pattern: "Hashmap",
+    why: "Character counts record the available supply so each ransom-note character can be checked in constant time.",
   },
   {
     id: 40,
@@ -288,6 +327,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/isomorphic-strings/",
     difficulty: "Easy",
     pattern: "Hashmap",
+    why: "A consistent one-to-one character mapping in both directions is exactly what isomorphism requires.",
   },
   {
     id: 41,
@@ -295,6 +335,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/word-pattern/",
     difficulty: "Easy",
     pattern: "Hashmap",
+    why: "Matching words and pattern symbols requires a bidirectional mapping so neither side can represent two values.",
   },
   {
     id: 42,
@@ -302,6 +343,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/valid-anagram/",
     difficulty: "Easy",
     pattern: "Hashmap",
+    why: "Frequency counts reduce both strings to the information that determines whether they are anagrams.",
   },
   {
     id: 43,
@@ -309,6 +351,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/group-anagrams/",
     difficulty: "Medium",
     pattern: "Hashmap",
+    why: "Anagrams share the same normalized signature, so a hash map can collect strings by that signature.",
   },
   {
     id: 44,
@@ -316,6 +359,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/two-sum/",
     difficulty: "Easy",
     pattern: "Hashmap",
+    why: "A hash map turns the needed complement for each value into a constant-time lookup.",
   },
   {
     id: 45,
@@ -323,6 +367,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/happy-number/",
     difficulty: "Easy",
     pattern: "Hashmap",
+    why: "A set detects repeated digit-square states, distinguishing a cycle from eventual arrival at one.",
   },
   {
     id: 46,
@@ -330,6 +375,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/contains-duplicate-ii/",
     difficulty: "Easy",
     pattern: "Hashmap",
+    why: "Tracking the latest index of each value makes the distance constraint testable during one scan.",
   },
   {
     id: 47,
@@ -338,12 +384,14 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/longest-consecutive-sequence/",
     difficulty: "Medium",
     pattern: "Hashmap",
+    why: "A set supports constant-time neighbor checks, letting sequences grow only from values with no predecessor.",
   }, {
     id: 48,
     title: "Summary Ranges",
     leetcodeUrl: "https://leetcode.com/problems/summary-ranges/",
     difficulty: "Easy",
     pattern: "Intervals",
+    why: "A sorted scan can extend each consecutive run and emit its endpoints when a gap appears.",
   },
   {
     id: 49,
@@ -351,6 +399,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/merge-intervals/",
     difficulty: "Medium",
     pattern: "Intervals",
+    why: "Sorting by start exposes overlapping intervals consecutively so they can be combined in one pass.",
   },
   {
     id: 50,
@@ -358,6 +407,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/insert-interval/",
     difficulty: "Medium",
     pattern: "Intervals",
+    why: "The new interval can be placed by separating intervals before it, overlapping it, and after it.",
   },
   {
     id: 51,
@@ -366,12 +416,14 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/",
     difficulty: "Medium",
     pattern: "Intervals",
+    why: "Sorting balloon endpoints supports the greedy choice of one arrow that covers as many current intervals as possible.",
   }, {
     id: 52,
     title: "Valid Parentheses",
     leetcodeUrl: "https://leetcode.com/problems/valid-parentheses/",
     difficulty: "Easy",
     pattern: "Stack",
+    why: "A stack preserves opening brackets in the order their matching closing brackets must resolve.",
   },
   {
     id: 53,
@@ -379,6 +431,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/simplify-path/",
     difficulty: "Medium",
     pattern: "Stack",
+    why: "A stack models directory entries, allowing parent references to undo the most recent path component.",
   },
   {
     id: 54,
@@ -386,6 +439,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/min-stack/",
     difficulty: "Medium",
     pattern: "Stack",
+    why: "An auxiliary minimum at each stack depth makes the current minimum available even after arbitrary pops.",
   },
   {
     id: 55,
@@ -394,6 +448,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/evaluate-reverse-polish-notation/",
     difficulty: "Medium",
     pattern: "Stack",
+    why: "Postfix notation makes each operator consume the most recent operands, exactly matching stack order.",
   },
   {
     id: 56,
@@ -401,12 +456,14 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/basic-calculator/",
     difficulty: "Hard",
     pattern: "Stack",
+    why: "A stack preserves pending signs and partial results while nested parentheses are evaluated.",
   }, {
     id: 57,
     title: "Linked List Cycle",
     leetcodeUrl: "https://leetcode.com/problems/linked-list-cycle/",
     difficulty: "Easy",
     pattern: "Linked List",
+    why: "Slow and fast pointers reveal a cycle because they must eventually meet if traversal repeats.",
   },
   {
     id: 58,
@@ -414,6 +471,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/add-two-numbers/",
     difficulty: "Medium",
     pattern: "Linked List",
+    why: "Linked-list traversal mirrors column addition, carrying overflow while creating one result digit at a time.",
   },
   {
     id: 59,
@@ -421,6 +479,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/merge-two-sorted-lists/",
     difficulty: "Easy",
     pattern: "Linked List",
+    why: "Comparing the two current nodes preserves sorted order while links are merged incrementally.",
   },
   {
     id: 60,
@@ -429,6 +488,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/copy-list-with-random-pointer/",
     difficulty: "Medium",
     pattern: "Linked List",
+    why: "A node-to-copy map preserves shared and random references while constructing an independent list.",
   },
   {
     id: 61,
@@ -436,6 +496,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/reverse-linked-list-ii/",
     difficulty: "Medium",
     pattern: "Linked List",
+    why: "Pointer rewiring reverses only the requested segment while keeping its surrounding links intact.",
   },
   {
     id: 62,
@@ -443,6 +504,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/reverse-nodes-in-k-group/",
     difficulty: "Hard",
     pattern: "Linked List",
+    why: "Each fixed-size group can be isolated and reversed through local pointer changes before reconnecting it.",
   },
   {
     id: 63,
@@ -451,6 +513,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
     difficulty: "Medium",
     pattern: "Linked List",
+    why: "A fixed gap between two pointers locates the node before the target in a single pass.",
   },
   {
     id: 64,
@@ -459,6 +522,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/",
     difficulty: "Medium",
     pattern: "Linked List",
+    why: "Sorted duplicates occur in runs, allowing pointer rewiring to skip every value that appears more than once.",
   },
   {
     id: 65,
@@ -466,6 +530,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/rotate-list/",
     difficulty: "Medium",
     pattern: "Linked List",
+    why: "Splitting at the rotation point and reconnecting the tail and head performs the shift without moving node values.",
   },
   {
     id: 66,
@@ -473,6 +538,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/partition-list/",
     difficulty: "Medium",
     pattern: "Linked List",
+    why: "Two stable tail pointers preserve relative order while dividing nodes around the pivot.",
   },
   {
     id: 67,
@@ -480,6 +546,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/lru-cache/",
     difficulty: "Medium",
     pattern: "Linked List",
+    why: "A hash map locates entries instantly, while a doubly linked list maintains recency order in constant time.",
   }, {
     id: 68,
     title: "Maximum Depth of Binary Tree",
@@ -487,6 +554,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
     difficulty: "Easy",
     pattern: "Binary Tree General",
+    why: "Tree depth is defined recursively by the deeper child subtree plus the current node.",
   },
   {
     id: 69,
@@ -494,6 +562,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/same-tree/",
     difficulty: "Easy",
     pattern: "Binary Tree General",
+    why: "Recursive comparison naturally checks corresponding nodes and subtrees for identical structure and values.",
   },
   {
     id: 70,
@@ -501,6 +570,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/invert-binary-tree/",
     difficulty: "Easy",
     pattern: "Binary Tree General",
+    why: "Swapping each node's children recursively applies the same inversion to every subtree.",
   },
   {
     id: 71,
@@ -508,6 +578,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/symmetric-tree/",
     difficulty: "Easy",
     pattern: "Binary Tree General",
+    why: "Symmetry is a mirrored subtree comparison, pairing each left branch with the corresponding right branch.",
   },
   {
     id: 72,
@@ -516,6 +587,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/",
     difficulty: "Medium",
     pattern: "Binary Tree General",
+    why: "Preorder identifies each root, while inorder determines how the remaining values split into left and right subtrees.",
   },
   {
     id: 73,
@@ -524,6 +596,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/",
     difficulty: "Medium",
     pattern: "Binary Tree General",
+    why: "Postorder identifies each root from the end, while inorder supplies the subtree boundaries.",
   },
   {
     id: 74,
@@ -532,6 +605,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/",
     difficulty: "Medium",
     pattern: "Binary Tree General",
+    why: "Level-order traversal visits neighbors on the same depth together, making next-pointer connections direct.",
   },
   {
     id: 75,
@@ -540,6 +614,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/",
     difficulty: "Medium",
     pattern: "Binary Tree General",
+    why: "A preorder traversal can rewire each processed subtree into the required root-left-right linked sequence.",
   },
   {
     id: 76,
@@ -547,6 +622,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/path-sum/",
     difficulty: "Easy",
     pattern: "Binary Tree General",
+    why: "Subtracting each node value from the remaining target aligns directly with recursive root-to-leaf traversal.",
   },
   {
     id: 77,
@@ -555,6 +631,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/sum-root-to-leaf-numbers/",
     difficulty: "Medium",
     pattern: "Binary Tree General",
+    why: "A root-to-leaf number is accumulated digit by digit as traversal descends each path.",
   },
   {
     id: 78,
@@ -563,6 +640,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/binary-tree-maximum-path-sum/",
     difficulty: "Hard",
     pattern: "Binary Tree General",
+    why: "Each node combines the best downward contribution from its children while updating a path that may cross the node.",
   },
   {
     id: 79,
@@ -571,6 +649,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/binary-search-tree-iterator/",
     difficulty: "Medium",
     pattern: "Binary Tree General",
+    why: "Inorder traversal yields BST values in sorted order, and a stack can pause that traversal between calls.",
   },
   {
     id: 80,
@@ -579,6 +658,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/count-complete-tree-nodes/",
     difficulty: "Easy",
     pattern: "Binary Tree General",
+    why: "Complete-tree structure allows subtree heights to identify perfect portions without visiting every node.",
   },
   {
     id: 81,
@@ -587,6 +667,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
     difficulty: "Medium",
     pattern: "Binary Tree General",
+    why: "The lowest shared ancestor is where recursive searches for the two targets first meet.",
   }, {
     id: 82,
     title: "Binary Tree Right Side View",
@@ -594,6 +675,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/binary-tree-right-side-view/",
     difficulty: "Medium",
     pattern: "Binary Tree BFS",
+    why: "Breadth-first traversal groups nodes by depth, and the final node seen at each level is the right-side view.",
   },
   {
     id: 83,
@@ -602,6 +684,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/average-of-levels-in-binary-tree/",
     difficulty: "Easy",
     pattern: "Binary Tree BFS",
+    why: "Breadth-first traversal exposes one complete depth at a time so its sum and count can be accumulated together.",
   },
   {
     id: 84,
@@ -610,6 +693,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/binary-tree-level-order-traversal/",
     difficulty: "Medium",
     pattern: "Binary Tree BFS",
+    why: "A queue processes nodes level by level, which is exactly the ordering the result requires.",
   }, {
     id: 85,
     title: "Minimum Absolute Difference in BST",
@@ -617,6 +701,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/minimum-absolute-difference-in-bst/",
     difficulty: "Easy",
     pattern: "Binary Search Tree",
+    why: "Inorder traversal visits BST values in sorted order, so the minimum difference appears between adjacent values.",
   },
   {
     id: 86,
@@ -625,6 +710,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",
     difficulty: "Medium",
     pattern: "Binary Search Tree",
+    why: "Inorder traversal produces BST values in ascending order, making the kth visit the kth smallest value.",
   },
   {
     id: 87,
@@ -633,12 +719,14 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/validate-binary-search-tree/",
     difficulty: "Medium",
     pattern: "Binary Search Tree",
+    why: "BST validity requires every node to remain within bounds inherited from all of its ancestors.",
   }, {
     id: 88,
     title: "Number of Islands",
     leetcodeUrl: "https://leetcode.com/problems/number-of-islands/",
     difficulty: "Medium",
     pattern: "Graph General",
+    why: "Each island is a connected component, so graph traversal marks all land reachable from one starting cell.",
   },
   {
     id: 89,
@@ -646,6 +734,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/surrounded-regions/",
     difficulty: "Medium",
     pattern: "Graph General",
+    why: "Only regions connected to the border survive, which graph traversal can mark before flipping enclosed cells.",
   },
   {
     id: 90,
@@ -653,6 +742,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/clone-graph/",
     difficulty: "Medium",
     pattern: "Graph General",
+    why: "Graph traversal plus an original-to-clone map copies every node once while preserving cycles and shared edges.",
   },
   {
     id: 91,
@@ -660,6 +750,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/evaluate-division/",
     difficulty: "Medium",
     pattern: "Graph General",
+    why: "Equations form weighted graph edges, so a path product gives the ratio between connected variables.",
   },
   {
     id: 92,
@@ -667,6 +758,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/course-schedule/",
     difficulty: "Medium",
     pattern: "Graph General",
+    why: "Prerequisites form a directed graph, and cycle detection determines whether every course can be completed.",
   },
   {
     id: 93,
@@ -674,6 +766,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/course-schedule-ii/",
     difficulty: "Medium",
     pattern: "Graph General",
+    why: "Topological ordering places every prerequisite before its dependent course when the dependency graph is acyclic.",
   }, {
     id: 94,
     title: "Snakes and Ladders",
@@ -681,6 +774,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/snakes-and-ladders/",
     difficulty: "Medium",
     pattern: "Graph BFS",
+    why: "Each board square is a graph node, and breadth-first search finds the fewest dice rolls through its transitions.",
   },
   {
     id: 95,
@@ -689,6 +783,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/minimum-genetic-mutation/",
     difficulty: "Medium",
     pattern: "Graph BFS",
+    why: "Mutations form unweighted one-character edges, so breadth-first search finds the minimum valid sequence.",
   },
   {
     id: 96,
@@ -696,6 +791,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/word-ladder/",
     difficulty: "Hard",
     pattern: "Graph BFS",
+    why: "Words differing by one letter form an unweighted graph, making breadth-first search the shortest transformation search.",
   }, {
     id: 97,
     title: "Implement Trie (Prefix Tree)",
@@ -703,6 +799,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/implement-trie-prefix-tree/",
     difficulty: "Medium",
     pattern: "Trie",
+    why: "A trie stores shared prefixes as shared paths, which is exactly what prefix insertion and lookup need.",
   },
   {
     id: 98,
@@ -711,6 +808,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/design-add-and-search-words-data-structure/",
     difficulty: "Medium",
     pattern: "Trie",
+    why: "A trie handles fixed letters directly while branching only where wildcard characters allow alternatives.",
   },
   {
     id: 99,
@@ -718,6 +816,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/word-search-ii/",
     difficulty: "Hard",
     pattern: "Trie",
+    why: "A trie shares dictionary prefixes, and backtracking prunes board searches as soon as no word can match.",
   }, {
     id: 100,
     title: "Letter Combinations of a Phone Number",
@@ -725,6 +824,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/letter-combinations-of-a-phone-number/",
     difficulty: "Medium",
     pattern: "Backtracking",
+    why: "Each digit contributes a small set of choices, so backtracking builds every combination one position at a time.",
   },
   {
     id: 101,
@@ -732,6 +832,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/combinations/",
     difficulty: "Medium",
     pattern: "Backtracking",
+    why: "Backtracking chooses the next increasing value and undoes it to enumerate every size-k subset without duplicates.",
   },
   {
     id: 102,
@@ -739,6 +840,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/permutations/",
     difficulty: "Medium",
     pattern: "Backtracking",
+    why: "Backtracking swaps or selects unused values so every ordering is explored exactly once.",
   },
   {
     id: 103,
@@ -746,6 +848,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/combination-sum/",
     difficulty: "Medium",
     pattern: "Backtracking",
+    why: "Backtracking explores reusable candidates while pruning branches whose running sum exceeds the target.",
   },
   {
     id: 104,
@@ -753,6 +856,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/n-queens-ii/",
     difficulty: "Hard",
     pattern: "Backtracking",
+    why: "Row-by-row backtracking enforces column and diagonal constraints before placing each queen.",
   },
   {
     id: 105,
@@ -760,6 +864,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/generate-parentheses/",
     difficulty: "Medium",
     pattern: "Backtracking",
+    why: "Backtracking tracks remaining opening and closing brackets, pruning any prefix that cannot become valid.",
   },
   {
     id: 106,
@@ -767,6 +872,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/word-search/",
     difficulty: "Medium",
     pattern: "Backtracking",
+    why: "Backtracking follows adjacent cells while marking the current path so a board position is not reused.",
   }, {
     id: 107,
     title: "Convert Sorted Array to Binary Search Tree",
@@ -774,6 +880,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/",
     difficulty: "Easy",
     pattern: "Divide & Conquer",
+    why: "Choosing the middle element as each root recursively preserves balance and BST ordering.",
   },
   {
     id: 108,
@@ -781,6 +888,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/sort-list/",
     difficulty: "Medium",
     pattern: "Divide & Conquer",
+    why: "Merge sort fits linked lists because halves can be split and merged through pointers without random access.",
   },
   {
     id: 109,
@@ -788,6 +896,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/construct-quad-tree/",
     difficulty: "Medium",
     pattern: "Divide & Conquer",
+    why: "A region is either uniform or divides into four independent subregions, matching recursive decomposition.",
   },
   {
     id: 110,
@@ -795,12 +904,14 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/merge-k-sorted-lists/",
     difficulty: "Hard",
     pattern: "Divide & Conquer",
+    why: "Divide-and-conquer merges sorted groups, while a heap or pairwise merging avoids scanning every list repeatedly.",
   }, {
     id: 111,
     title: "Maximum Subarray",
     leetcodeUrl: "https://leetcode.com/problems/maximum-subarray/",
     difficulty: "Medium",
     pattern: "Kadane's Algorithm",
+    why: "The best subarray ending at each position depends only on whether extending the previous sum helps.",
   },
   {
     id: 112,
@@ -809,6 +920,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/maximum-sum-circular-subarray/",
     difficulty: "Medium",
     pattern: "Kadane's Algorithm",
+    why: "Circular subarrays are captured by comparing the ordinary maximum with the total minus the minimum subarray.",
   }, {
     id: 113,
     title: "Search Insert Position",
@@ -816,6 +928,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/search-insert-position/",
     difficulty: "Easy",
     pattern: "Binary Search",
+    why: "Sorted order lets binary search locate the first position where the target could appear.",
   },
   {
     id: 114,
@@ -824,6 +937,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/search-a-2d-matrix/",
     difficulty: "Medium",
     pattern: "Binary Search",
+    why: "Treating the matrix as one sorted sequence allows binary search through index-to-coordinate conversion.",
   },
   {
     id: 115,
@@ -832,6 +946,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/find-peak-element/",
     difficulty: "Medium",
     pattern: "Binary Search",
+    why: "Comparing a midpoint with its neighbor identifies a direction that must contain a peak.",
   },
   {
     id: 116,
@@ -840,6 +955,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/search-in-rotated-sorted-array/",
     difficulty: "Medium",
     pattern: "Binary Search",
+    why: "One side of a rotated array is always sorted, which reveals whether the target lies in that half.",
   },
   {
     id: 117,
@@ -848,6 +964,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/",
     difficulty: "Medium",
     pattern: "Binary Search",
+    why: "Two boundary searches locate the first and last valid target positions in logarithmic time.",
   },
   {
     id: 118,
@@ -856,6 +973,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/",
     difficulty: "Medium",
     pattern: "Binary Search",
+    why: "The rotation creates one unsorted boundary, and midpoint comparisons reveal which half contains the minimum.",
   },
   {
     id: 119,
@@ -864,6 +982,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/median-of-two-sorted-arrays/",
     difficulty: "Hard",
     pattern: "Binary Search",
+    why: "Partitioning both sorted arrays by binary search balances the left and right halves around the median.",
   }, {
     id: 120,
     title: "Kth Largest Element in an Array",
@@ -871,6 +990,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/kth-largest-element-in-an-array/",
     difficulty: "Medium",
     pattern: "Heap",
+    why: "A size-k heap retains only the strongest candidates, avoiding a full sort of the array.",
   },
   {
     id: 121,
@@ -878,6 +998,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/ipo/",
     difficulty: "Hard",
     pattern: "Heap",
+    why: "Sorting projects by required capital and using a max-heap selects the best affordable profit at each step.",
   },
   {
     id: 122,
@@ -886,6 +1007,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/find-k-pairs-with-smallest-sums/",
     difficulty: "Medium",
     pattern: "Heap",
+    why: "A min-heap advances only the next possible pair from each sorted row of candidates.",
   },
   {
     id: 123,
@@ -894,12 +1016,14 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/find-median-from-data-stream/",
     difficulty: "Hard",
     pattern: "Heap",
+    why: "Two heaps maintain balanced lower and upper halves so the median is always at their tops.",
   }, {
     id: 124,
     title: "Add Binary",
     leetcodeUrl: "https://leetcode.com/problems/add-binary/",
     difficulty: "Easy",
     pattern: "Bit Manipulation",
+    why: "Binary addition is digitwise arithmetic where XOR-like sum bits and a carry determine each output bit.",
   },
   {
     id: 125,
@@ -907,6 +1031,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/reverse-bits/",
     difficulty: "Easy",
     pattern: "Bit Manipulation",
+    why: "Shifting and masking move each input bit into its mirrored output position.",
   },
   {
     id: 126,
@@ -914,6 +1039,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/number-of-1-bits/",
     difficulty: "Easy",
     pattern: "Bit Manipulation",
+    why: "Repeatedly clearing the lowest set bit counts ones without examining every bit position.",
   },
   {
     id: 127,
@@ -921,6 +1047,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/single-number/",
     difficulty: "Easy",
     pattern: "Bit Manipulation",
+    why: "XOR cancels paired values, leaving only the value that appears once.",
   },
   {
     id: 128,
@@ -928,6 +1055,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/single-number-ii/",
     difficulty: "Medium",
     pattern: "Bit Manipulation",
+    why: "Bit counts modulo three remove every tripled contribution and preserve the unique number's bits.",
   },
   {
     id: 129,
@@ -936,12 +1064,14 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/bitwise-and-of-numbers-range/",
     difficulty: "Medium",
     pattern: "Bit Manipulation",
+    why: "A common high-order prefix is all that survives bitwise AND across an entire consecutive range.",
   }, {
     id: 130,
     title: "Palindrome Number",
     leetcodeUrl: "https://leetcode.com/problems/palindrome-number/",
     difficulty: "Easy",
     pattern: "Math",
+    why: "Reversing or comparing decimal digits tests the palindrome property without string-specific structures.",
   },
   {
     id: 131,
@@ -949,6 +1079,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/plus-one/",
     difficulty: "Easy",
     pattern: "Math",
+    why: "Elementary addition from the last digit handles the carry while preserving the array representation.",
   },
   {
     id: 132,
@@ -957,6 +1088,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/factorial-trailing-zeroes/",
     difficulty: "Medium",
     pattern: "Math",
+    why: "Each trailing zero comes from a factor of ten, so counting factors of five determines the total.",
   },
   {
     id: 133,
@@ -964,6 +1096,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/sqrtx/",
     difficulty: "Easy",
     pattern: "Math",
+    why: "The integer square root is a monotonic boundary, making binary search over possible roots appropriate.",
   },
   {
     id: 134,
@@ -971,6 +1104,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/powx-n/",
     difficulty: "Medium",
     pattern: "Math",
+    why: "Exponentiation by squaring halves the exponent at every step and reuses squared powers.",
   },
   {
     id: 135,
@@ -979,12 +1113,14 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/max-points-on-a-line/",
     difficulty: "Hard",
     pattern: "Math",
+    why: "A normalized slope identifies collinear point pairs, allowing each anchor to count points on the same line.",
   }, {
     id: 136,
     title: "Climbing Stairs",
     leetcodeUrl: "https://leetcode.com/problems/climbing-stairs/",
     difficulty: "Easy",
     pattern: "1D DP",
+    why: "The number of ways to reach a step depends only on the two preceding step counts.",
   },
   {
     id: 137,
@@ -992,6 +1128,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/house-robber/",
     difficulty: "Medium",
     pattern: "1D DP",
+    why: "At each house, the best total is the better of skipping it or adding it to the best nonadjacent total.",
   },
   {
     id: 138,
@@ -999,6 +1136,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/word-break/",
     difficulty: "Medium",
     pattern: "1D DP",
+    why: "A prefix is segmentable when it can extend an earlier segmentable prefix with a dictionary word.",
   },
   {
     id: 139,
@@ -1006,6 +1144,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/coin-change/",
     difficulty: "Medium",
     pattern: "1D DP",
+    why: "Each amount reuses solutions to smaller amounts, so dynamic programming finds the fewest coins across overlapping choices.",
   },
   {
     id: 140,
@@ -1014,6 +1153,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/longest-increasing-subsequence/",
     difficulty: "Medium",
     pattern: "1D DP",
+    why: "Each value extends the best increasing subsequence ending before it, or updates a binary-searched tail candidate.",
   },
   {
     id: 141,
@@ -1021,6 +1161,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/triangle/",
     difficulty: "Medium",
     pattern: "1D DP",
+    why: "Each cell depends on the two cells directly below it, allowing rows to collapse into one-dimensional state.",
   },
   {
     id: 142,
@@ -1028,6 +1169,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/minimum-path-sum/",
     difficulty: "Medium",
     pattern: "1D DP",
+    why: "Each grid cell's minimum cost depends only on the best cost from above or from the left.",
   },
   {
     id: 143,
@@ -1035,6 +1177,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/unique-paths-ii/",
     difficulty: "Medium",
     pattern: "1D DP",
+    why: "Each open cell's path count is the sum from above and left, while obstacles reset that state to zero.",
   },
   {
     id: 144,
@@ -1043,12 +1186,14 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/longest-palindromic-substring/",
     difficulty: "Medium",
     pattern: "1D DP",
+    why: "Palindrome expansion reuses symmetry around each possible center instead of comparing every substring from scratch.",
   }, {
     id: 145,
     title: "Interleaving String",
     leetcodeUrl: "https://leetcode.com/problems/interleaving-string/",
     difficulty: "Medium",
     pattern: "Multidimensional DP",
+    why: "A two-dimensional state records how much of each source string has formed the target prefix.",
   },
   {
     id: 146,
@@ -1056,6 +1201,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/edit-distance/",
     difficulty: "Medium",
     pattern: "Multidimensional DP",
+    why: "A grid of prefix pairs captures the cheapest insert, delete, or replace transition between two strings.",
   },
   {
     id: 147,
@@ -1064,6 +1210,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/",
     difficulty: "Hard",
     pattern: "Multidimensional DP",
+    why: "Tracking transactions and holding state separates the dependent buy and sell decisions across days.",
   },
   {
     id: 148,
@@ -1072,6 +1219,7 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/",
     difficulty: "Hard",
     pattern: "Multidimensional DP",
+    why: "Dynamic programming over day, transaction count, and holding state captures the best result under the transaction limit.",
   },
   {
     id: 149,
@@ -1079,6 +1227,7 @@ export const problems: Problem[] = [
     leetcodeUrl: "https://leetcode.com/problems/maximal-square/",
     difficulty: "Medium",
     pattern: "Multidimensional DP",
+    why: "Each square size depends on the three neighboring square sizes that can support its top-left extension.",
   },
   {
     id: 150,
@@ -1087,5 +1236,6 @@ export const problems: Problem[] = [
       "https://leetcode.com/problems/longest-common-subsequence/",
     difficulty: "Medium",
     pattern: "Multidimensional DP",
+    why: "A table over both string prefixes records whether matching characters can extend their best common subsequence.",
   },
 ];
