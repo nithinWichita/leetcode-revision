@@ -76,7 +76,7 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   }
 
   return (
-    < div className="problem-card">
+    <div className="problem-card">
       <div className="problem-header">
         <h2>{problem.title}</h2>
 
@@ -90,35 +90,39 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
         {problem.difficulty}
       </p>
       <div className="pattern-section">
+        {!showPattern && isCorrect !== true && (
+          <>
+            <p>What pattern would you use?</p>
 
+            <select
+              className="pattern-select"
+              value={selectedPattern}
+              onChange={(e) => {
+                setSelectedPattern(e.target.value);
+                setIsCorrect(null);
+              }}
+            >
+              <option value="">Select a pattern</option>
 
-        <p>What pattern would you use?</p>
+              {patterns.map((pattern) => (
+                <option key={pattern} value={pattern}>
+                  {pattern}
+                </option>
+              ))}
+            </select>
 
-        <select
-          className="pattern-select"
-          value={selectedPattern}
-          onChange={(e) => {
-            setSelectedPattern(e.target.value);
-            setIsCorrect(null);
-          }}
-        >
-          <option value="">Select a pattern</option>
+            <button
+              className="button"
+              onClick={() => {
+                setIsCorrect(problem.pattern === selectedPattern);
+              }}
+            >
+              Check Pattern
+            </button>
+          </>
+        )}
 
-          {patterns.map((pattern) => (
-            <option key={pattern} value={pattern}>
-              {pattern}
-            </option>
-          ))}
-        </select>
-
-        <button
-          className="button"
-          onClick={() => {
-            setIsCorrect(problem.pattern === selectedPattern);
-          }}
-        >
-          Check Pattern
-        </button>
+        
       </div>
 
       {isCorrect === true && (
