@@ -1,75 +1,72 @@
-import { problems } from "./data/problems";
+import { problems } from "./data/problems.ts";
 import ProblemCard from "./components/ProblemCard";
-import { isProblemDue } from "./utils/isProblemDue";
-import { isNewProblem } from "./utils/isNewProblem";
-import { useState } from "react";
-import { getTodayDate } from "./utils/getTodayDate";
-import { getDailyBatch } from "./utils/getDailyBatch";
+import { useEffect, useState } from "react";
 import "./App.css";
 function App() {
-  const [, setRefreshKey] = useState(0);
-  const today = getTodayDate();
-  const batchDate = localStorage.getItem("dailyBatchDate");
-  const savedDailyBatch = getDailyBatch();
-  const savedDailyBatchTotal =
-    localStorage.getItem("dailyBatchTotal");
-  const isNewDay = batchDate !== today;
+  const [dailyBatchIds, setDailyBatchIds] = useState<number[]>([]);
+  const [attemptedProblemIds, setAttemptedProblemIds] =
+    useState<number[]>([]);
+  useEffect(() => {
+    fetch("http://localhost:3000/api/daily-batch", {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setDailyBatchIds(data);
+      });
+    fetch("http://localhost:3000/api/progress", {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setAttemptedProblemIds(
+          data.map((progress: { problem_id: number }) => progress.problem_id)
+        );
+      });
+  }, []);
+  const isNewProblem = (problemId: number) => {
+    return !attemptedProblemIds.includes(problemId);
+  };
 
-
-
-  const hasNewProblems = problems.some((problem) =>
-    isNewProblem(problem.id)
-  );
-  const dueReviewProblems = problems.filter(
-    (problem) =>
-      !isNewProblem(problem.id) &&
-      isProblemDue(problem.id)
-  );
-  const reviewLimit = hasNewProblems ? 4 : 5;
-  const reviewProblems = dueReviewProblems.slice(0, reviewLimit);
-  const newProblemLimit = 5 - reviewProblems.length;
-
-
-  const newProblems = problems
-    .filter((problem) => isNewProblem(problem.id))
-    .slice(0, newProblemLimit);
-
-  const newBatch = [...newProblems, ...reviewProblems];
-  const dailyBatchTotal = isNewDay
-    ? newBatch.length
-    : savedDailyBatchTotal
-      ? Number(savedDailyBatchTotal)
-      : savedDailyBatch.length;
-  if (isNewDay) {
-    localStorage.setItem(
-      "dailyBatch",
-      JSON.stringify(newBatch.map((problem) => problem.id))
-    );
-    localStorage.setItem(
-      "dailyBatchTotal",
-      String(newBatch.length)
+  const login = async () => {
+    const response = await fetch(
+      "http://localhost:3000/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email: "nithin@example.com",
+          password: "hello123",
+        }),
+      }
     );
 
-    localStorage.setItem("dailyBatchDate", today);
-  }
+    const data = await response.json();
+    console.log("Login:", data);
+  };
 
-  const dailyBatchIds = isNewDay
-    ? newBatch.map((problem) => problem.id)
-    : savedDailyBatch;
+
+
+
   const todaysProblems = dailyBatchIds
     .map((id) => problems.find((problem) => problem.id === id))
     .filter((problem) => problem !== undefined);
-  const solvedToday =
-    dailyBatchTotal - todaysProblems.length;
   const unseenProblems = problems.filter((problem) =>
     isNewProblem(problem.id)
   ).length;
   const attemptedProblems = problems.length - unseenProblems;
+
   return (
     <div className="app">
+      <button onClick={login}>
+        Test Login
+      </button>
       <h1>LeetCode Revision</h1>
       <p className="daily-progress">
-        Solved today: {solvedToday} · Remaining: {todaysProblems.length}
+        Remaining: {todaysProblems.length}
       </p>
       <p className="overall-progress">
         Top 150: {attemptedProblems} attempted · {unseenProblems} unseen
@@ -83,16 +80,13 @@ function App() {
           problem={problem}
           isNew={isNewProblem(problem.id)}
           onComplete={() => {
-            const updatedBatch = dailyBatchIds.filter(
-              (id) => id !== problem.id
+            setDailyBatchIds((current) =>
+              current.filter((id) => id !== problem.id)
             );
-
-            localStorage.setItem(
-              "dailyBatch",
-              JSON.stringify(updatedBatch)
-            );
-
-            setRefreshKey((old) => old + 1);
+            setAttemptedProblemIds((current) => [
+              ...current,
+              problem.id,
+            ]);
           }} />
       ))}
     </div>

@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import pg from "pg";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -20,7 +21,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!JWT_SECRET) {

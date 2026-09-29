@@ -13,67 +13,32 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasOpenedProblem, setHasOpenedProblem] = useState(false);
   const [showPattern, setShowPattern] = useState(false);
-  const [nextReviewDate, setNextReviewDate] = useState<Date | null>(() => {
-    const saved = localStorage.getItem(`problem-${problem.id}`);
+  
 
-    if (!saved) {
-      return null;
+  async function scheduleReview(
+  result: "forgot" | "help" | "solved" | "easy"
+) {
+  const response = await fetch(
+    "http://localhost:3000/api/progress",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        problemId: problem.id,
+        result,
+      }),
     }
+  );
 
-    const revision = JSON.parse(saved);
-    return new Date(revision.nextReview);
-  });
+  const data = await response.json();
 
-  function scheduleReview(
-    result: "forgot" | "help" | "solved" | "easy"
-  ) {
-    const today = new Date();
-    const nextReview = new Date(today);
+  console.log("Progress saved:", data);
 
-    const saved = localStorage.getItem(`problem-${problem.id}`);
-
-    let currentInterval = 0;
-
-    if (saved) {
-      const revision = JSON.parse(saved);
-      currentInterval = revision.interval;
-    }
-
-    let days = 0;
-
-    if (result === "forgot") {
-      days = 1;
-    } else if (result === "help") {
-      days =
-        currentInterval === 0
-          ? 3
-          : Math.max(1, Math.floor(currentInterval / 2));
-    } else if (result === "solved") {
-      days =
-        currentInterval === 0
-          ? 7
-          : Math.min(60, currentInterval * 2);
-    } else if (result === "easy") {
-      days =
-        currentInterval === 0
-          ? 14
-          : Math.min(60, currentInterval * 3);
-    }
-
-    nextReview.setDate(today.getDate() + days);
-
-    setNextReviewDate(nextReview);
-
-    localStorage.setItem(
-      `problem-${problem.id}`,
-      JSON.stringify({
-        nextReview: nextReview.toISOString(),
-        interval: days,
-      })
-    );
-
-    onComplete();
-  }
+  onComplete();
+}
 
   return (
     <div className="problem-card">
@@ -183,12 +148,6 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
             Easy
           </button>
         </div>
-      )}
-
-      {nextReviewDate && (
-        <p className="next-review">
-          Next review: {nextReviewDate.toLocaleDateString()}
-        </p>
       )}
     </div>
   );
