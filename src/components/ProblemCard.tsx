@@ -13,32 +13,35 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasOpenedProblem, setHasOpenedProblem] = useState(false);
   const [showPattern, setShowPattern] = useState(false);
-  
+
 
   async function scheduleReview(
-  result: "forgot" | "help" | "solved" | "easy"
-) {
-  const response = await fetch(
-    "http://localhost:3000/api/progress",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        problemId: problem.id,
-        result,
-      }),
+    result: "forgot" | "help" | "solved" | "easy"
+  ) {
+    const response = await fetch(
+      "http://localhost:3000/api/progress",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          problemId: problem.id,
+          result,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Failed to save progress:", data);
+      return;
     }
-  );
 
-  const data = await response.json();
-
-  console.log("Progress saved:", data);
-
-  onComplete();
-}
+    onComplete();
+  }
 
   return (
     <div className="problem-card">
@@ -87,7 +90,7 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
           </>
         )}
 
-        
+
       </div>
 
       {isCorrect === true && (
@@ -95,8 +98,8 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
       )}
 
       {isCorrect === false && !showPattern && (
-  <p className="pattern-feedback">❌ Try again.</p>
-)}
+        <p className="pattern-feedback">❌ Try again.</p>
+      )}
       {isCorrect === false && !showPattern && (
         <button
           className="button"

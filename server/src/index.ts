@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
@@ -37,28 +37,12 @@ const PORT = 3000;
 const { Pool } = pg;
 
 const pool = new Pool({
-  database: "leetcode_revision",
+  database: process.env.DATABASE_NAME,
 });
 
-app.get("/users", async (req, res) => {
-  const result = await pool.query("SELECT * FROM users");
-  res.json(result.rows);
-});
 
-app.post("/api/auth/register", async (req, res) => {
-  const { email, password } = req.body;
 
-  const passwordHash = await bcrypt.hash(password, 10);
 
-  const result = await pool.query(
-    `INSERT INTO users (email, password_hash)
-     VALUES ($1, $2)
-     RETURNING id, email, created_at`,
-    [email, passwordHash]
-  );
-
-  res.status(201).json(result.rows[0]);
-});
 
 app.post("/api/auth/login", async (req, res) => {
   const { email, password } = req.body;
@@ -96,7 +80,7 @@ app.post("/api/auth/login", async (req, res) => {
   res.cookie("token", token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: false,
+    secure: process.env.NODE_ENV === "production",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
@@ -105,7 +89,13 @@ app.post("/api/auth/login", async (req, res) => {
     email: user.email,
   });
 });
-
+app.get(
+  "/api/problems",
+  authenticate,
+  (req: AuthenticatedRequest, res) => {
+    res.json(problems);
+  }
+);
 app.get(
   "/api/me",
   authenticate,
@@ -115,7 +105,10 @@ app.get(
     });
   }
 );
-
+app.post("/api/auth/logout", (req, res) => {
+  res.clearCookie("token");
+  res.json({ message: "Logged out" });
+});
 app.post(
   "/api/progress",
   authenticate,
@@ -227,7 +220,45 @@ app.get(
     res.json(result.rows);
   }
 );
+app.post("/api/auth/register", async (req, res) => {
+  const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).json({
+      message: "Email and password are required",
+    });
+  }
+
+  // registration logic goes here
+  try {
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const result = await pool.query(
+      `INSERT INTO users (email, password_hash)
+     VALUES ($1, $2)
+     RETURNING id, email`,
+      [email, passwordHash]
+    );
+
+    return res.status(201).json(result.rows[0]);
+  } catch (error: unknown) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "23505"
+    ) {
+      return res.status(409).json({
+        message: "Email already registered",
+      });
+    }
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Could not create account",
+    });
+  }
+});
 app.get(
   "/api/daily-batch",
   authenticate,
@@ -325,7 +356,21 @@ app.get(
     return res.json(batch);
   }
 );
+app.use(
+  (
+    error: unknown,
+    req: express.Request,
+    res: express.Response,
+    _next: express.NextFunction
+  ) => {
+    void _next;
+    console.error(error);
 
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

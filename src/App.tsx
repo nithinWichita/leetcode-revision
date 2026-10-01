@@ -1,29 +1,91 @@
-import { problems } from "./data/problems.ts";
 import ProblemCard from "./components/ProblemCard";
 import { useEffect, useState } from "react";
+import type { Problem } from "./types/Problem";
 import "./App.css";
 function App() {
+  const [authError, setAuthError] = useState("");
   const [dailyBatchIds, setDailyBatchIds] = useState<number[]>([]);
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] =
+    useState<boolean | null>(null);
+  const logout = async () => {
+    const response = await fetch(
+      "http://localhost:3000/api/auth/logout",
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+
+    if (response.ok) {
+      setIsAuthenticated(false);
+      setDailyBatchIds([]);
+      setAttemptedProblemIds([]);
+      setProblems([]);
+      setIsLoadingData(true);
+
+    }
+  };
   const [attemptedProblemIds, setAttemptedProblemIds] =
     useState<number[]>([]);
   useEffect(() => {
+    fetch("http://localhost:3000/api/me", {
+      credentials: "include",
+    }).then((response) => {
+      setIsAuthenticated(response.ok);
+    });
+  }, []);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
     fetch("http://localhost:3000/api/daily-batch", {
       credentials: "include",
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          return [];
+        }
+
+        return response.json();
+      })
       .then((data) => {
         setDailyBatchIds(data);
+        setIsLoadingData(false);
       });
     fetch("http://localhost:3000/api/progress", {
       credentials: "include",
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          return [];
+        }
+
+        return response.json();
+      })
       .then((data) => {
         setAttemptedProblemIds(
           data.map((progress: { problem_id: number }) => progress.problem_id)
         );
       });
-  }, []);
+    fetch("http://localhost:3000/api/problems", {
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return [];
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        setProblems(data);
+      });
+
+  }, [isAuthenticated]);
   const isNewProblem = (problemId: number) => {
     return !attemptedProblemIds.includes(problemId);
   };
@@ -38,16 +100,42 @@ function App() {
         },
         credentials: "include",
         body: JSON.stringify({
-          email: "nithin@example.com",
-          password: "hello123",
+          email,
+          password,
         }),
       }
     );
 
     const data = await response.json();
-    console.log("Login:", data);
+    if (response.ok) {
+      setAuthError("");
+      setIsAuthenticated(true);
+    } else {
+      setAuthError(data.message);
+    }
   };
-
+  const register = async () => {
+    const response = await fetch(
+      "http://localhost:3000/api/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
+    const data = await response.json();
+    if (response.ok) {
+      setAuthError("");
+      await login();
+    } else {
+      setAuthError(data.message);
+    }
+  };
 
 
 
@@ -58,22 +146,48 @@ function App() {
     isNewProblem(problem.id)
   ).length;
   const attemptedProblems = problems.length - unseenProblems;
+  if (isAuthenticated === null) {
+    return <p>Loading...</p>;
+  }
+  if (!isAuthenticated) {
+    return (
+      <div className="app">
+        <h1>LeetCode Revision</h1>
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button onClick={login}>Login</button>
+        <button onClick={register}>Register</button>
+        {authError && (
+          <p className="auth-error">{authError}</p>
+        )}
+      </div>
+    );
+  }
+  if (isLoadingData) {
+    return <p>Loading problems...</p>;
+  }
 
   return (
     <div className="app">
-      <button onClick={login}>
-        Test Login
-      </button>
-      <h1>LeetCode Revision</h1>
-      <p className="daily-progress">
-        Remaining: {todaysProblems.length}
-      </p>
+      <h1>LeetCode Revision</h1><button onClick={logout}>Logout</button>
+      <p className="daily-progress">Remaining: {todaysProblems.length}</p>
       <p className="overall-progress">
         Top 150: {attemptedProblems} attempted · {unseenProblems} unseen
       </p>
-      {todaysProblems.length === 0 && (
-        <p>🎉 You're done for today!</p>
-      )}
+      {todaysProblems.length === 0 && <p>🎉 You're done for today!</p>}
       {todaysProblems.map((problem) => (
         <ProblemCard
           key={problem.id}
@@ -83,11 +197,9 @@ function App() {
             setDailyBatchIds((current) =>
               current.filter((id) => id !== problem.id)
             );
-            setAttemptedProblemIds((current) => [
-              ...current,
-              problem.id,
-            ]);
-          }} />
+            setAttemptedProblemIds((current) => [...current, problem.id]);
+          }}
+        />
       ))}
     </div>
   );
