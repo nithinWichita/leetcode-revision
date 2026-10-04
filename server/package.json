@@ -4,7 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "db:setup": "psql leetcode_revision -f schema.sql"
   },
   "keywords": [],
   "author": "",
