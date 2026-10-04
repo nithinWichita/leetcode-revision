@@ -2,6 +2,7 @@ import ProblemCard from "./components/ProblemCard";
 import { useEffect, useState } from "react";
 import type { Problem } from "./types/Problem";
 import "./App.css";
+const API_URL = import.meta.env.VITE_API_URL;
 function App() {
   const [authError, setAuthError] = useState("");
   const [dailyBatchIds, setDailyBatchIds] = useState<number[]>([]);
@@ -13,7 +14,7 @@ function App() {
     useState<boolean | null>(null);
   const logout = async () => {
     const response = await fetch(
-      "http://localhost:3000/api/auth/logout",
+      `${API_URL}/api/auth/logout`,
       {
         method: "POST",
         credentials: "include",
@@ -32,7 +33,7 @@ function App() {
   const [attemptedProblemIds, setAttemptedProblemIds] =
     useState<number[]>([]);
   useEffect(() => {
-    fetch("http://localhost:3000/api/me", {
+    fetch(`${API_URL}/api/me`, {
       credentials: "include",
     }).then((response) => {
       setIsAuthenticated(response.ok);
@@ -42,49 +43,57 @@ function App() {
     if (!isAuthenticated) {
       return;
     }
-    fetch("http://localhost:3000/api/daily-batch", {
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return [];
-        }
 
-        return response.json();
-      })
-      .then((data) => {
-        setDailyBatchIds(data);
-        setIsLoadingData(false);
-      });
-    fetch("http://localhost:3000/api/progress", {
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return [];
-        }
 
-        return response.json();
-      })
-      .then((data) => {
-        setAttemptedProblemIds(
-          data.map((progress: { problem_id: number }) => progress.problem_id)
-        );
-      });
-    fetch("http://localhost:3000/api/problems", {
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return [];
-        }
 
-        return response.json();
-      })
-      .then((data) => {
-        setProblems(data);
-      });
+    const loadData = async () => {
+      await Promise.all([
+        fetch(`${API_URL}/api/daily-batch`, {
+          credentials: "include",
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return [];
+            }
 
+            return response.json();
+          })
+          .then((data) => {
+            setDailyBatchIds(data);
+          }), fetch(`${API_URL}/api/progress`, {
+            credentials: "include",
+          })
+            .then((response) => {
+              if (!response.ok) {
+                return [];
+              }
+
+              return response.json();
+            })
+            .then((data) => {
+              setAttemptedProblemIds(
+                data.map((progress: { problem_id: number }) => progress.problem_id)
+              );
+            }),
+        fetch(`${API_URL}/api/problems`, {
+          credentials: "include",
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return [];
+            }
+
+            return response.json();
+          })
+          .then((data) => {
+            setProblems(data);
+          }),
+
+
+      ]);
+      setIsLoadingData(false);
+    };
+    loadData();
   }, [isAuthenticated]);
   const isNewProblem = (problemId: number) => {
     return !attemptedProblemIds.includes(problemId);
@@ -92,7 +101,7 @@ function App() {
 
   const login = async () => {
     const response = await fetch(
-      "http://localhost:3000/api/auth/login",
+      `${API_URL}/api/auth/login`,
       {
         method: "POST",
         headers: {
@@ -116,7 +125,7 @@ function App() {
   };
   const register = async () => {
     const response = await fetch(
-      "http://localhost:3000/api/auth/register",
+      `${API_URL}/api/auth/register`,
       {
         method: "POST",
         headers: {

@@ -1,7 +1,7 @@
 import type { Problem } from "../types/Problem";
 import { useState } from "react";
 import { patterns } from "../data/patterns";
-
+const API_URL = import.meta.env.VITE_API_URL;
 type ProblemCardProps = {
   problem: Problem;
   isNew: boolean;
@@ -19,7 +19,7 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
     result: "forgot" | "help" | "solved" | "easy"
   ) {
     const response = await fetch(
-      "http://localhost:3000/api/progress",
+      `${API_URL}/api/progress`,
       {
         method: "POST",
         headers: {

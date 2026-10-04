@@ -46,10 +46,10 @@ const pool = new Pool({
 
 app.post("/api/auth/login", async (req, res) => {
   const { email, password } = req.body;
-
+  const normalizedEmail = email?.trim().toLowerCase();
   const result = await pool.query(
     "SELECT * FROM users WHERE email = $1",
-    [email]
+    [normalizedEmail]
   );
 
   const user = result.rows[0];
@@ -106,7 +106,11 @@ app.get(
   }
 );
 app.post("/api/auth/logout", (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
   res.json({ message: "Logged out" });
 });
 app.post(
@@ -222,8 +226,13 @@ app.get(
 );
 app.post("/api/auth/register", async (req, res) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
+  const normalizedEmail = email?.trim().toLowerCase();
+  if (password.length < 8) {
+    return res.status(400).json({
+      message: "Password must be at least 8 characters",
+    });
+  }
+  if (!normalizedEmail || !password) {
     return res.status(400).json({
       message: "Email and password are required",
     });
@@ -237,7 +246,7 @@ app.post("/api/auth/register", async (req, res) => {
       `INSERT INTO users (email, password_hash)
      VALUES ($1, $2)
      RETURNING id, email`,
-      [email, passwordHash]
+      [normalizedEmail, passwordHash]
     );
 
     return res.status(201).json(result.rows[0]);
