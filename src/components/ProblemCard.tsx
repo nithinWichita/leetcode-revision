@@ -14,10 +14,12 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   const [hasOpenedProblem, setHasOpenedProblem] = useState(false);
   const [showPattern, setShowPattern] = useState(false);
   const [saveError, setSaveError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   async function scheduleReview(
     result: "forgot" | "help" | "solved" | "easy"
   ) {
+    setIsSaving(true);
     try {
       const response = await fetch(
         `${API_URL}/api/progress`,
@@ -45,6 +47,8 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
       onComplete();
     } catch {
       setSaveError("Could not connect to the server. Please try again.");
+    } finally {
+      setIsSaving(false);
     }
   }
   return (
@@ -139,19 +143,19 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
 
       {hasOpenedProblem && (
         <div className="rating-buttons">
-          <button className="button" onClick={() => scheduleReview("forgot")}>
+          <button className="button"  disabled={isSaving} onClick={() => scheduleReview("forgot")}>
             Forgot
           </button>
 
-          <button className="button" onClick={() => scheduleReview("help")}>
+          <button className="button"  disabled={isSaving} onClick={() => scheduleReview("help")}>
             Needed Help
           </button>
 
-          <button className="button" onClick={() => scheduleReview("solved")}>
+          <button className="button"  disabled={isSaving} onClick={() => scheduleReview("solved")}>
             Solved
           </button>
 
-          <button className="button" onClick={() => scheduleReview("easy")}>
+          <button className="button"  disabled={isSaving} onClick={() => scheduleReview("easy")}>
             Easy
           </button>
         </div>
