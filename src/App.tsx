@@ -5,6 +5,8 @@ import "./App.css";
 const API_URL = import.meta.env.VITE_API_URL;
 function App() {
   const [authError, setAuthError] = useState("");
+  const [authAction, setAuthAction] =
+    useState<"login" | "register" | null>(null); 
   const [dailyBatchIds, setDailyBatchIds] = useState<number[]>([]);
   const [problems, setProblems] = useState<Problem[]>([]);
   const [email, setEmail] = useState("");
@@ -100,30 +102,37 @@ function App() {
   };
 
   const login = async () => {
-    const response = await fetch(
-      `${API_URL}/api/auth/login`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      }
-    );
+    setAuthAction("login");
 
-    const data = await response.json();
-    if (response.ok) {
-      setAuthError("");
-      setIsAuthenticated(true);
-    } else {
-      setAuthError(data.message);
+    try {
+      const response = await fetch(
+        `${API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setAuthError("");
+        setIsAuthenticated(true);
+      } else {
+        setAuthError(data.message);
+      }
+    } catch {
+      setAuthError("Could not connect to the server.");
+    } finally {
+      setAuthAction(null);
     }
   };
   const register = async () => {
+    setAuthAction("register");  
     const response = await fetch(
       `${API_URL}/api/auth/register`,
       {
@@ -144,6 +153,7 @@ function App() {
     } else {
       setAuthError(data.message);
     }
+    setAuthAction(null);
   };
 
 
@@ -177,8 +187,12 @@ function App() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button onClick={login}>Login</button>
-        <button onClick={register}>Register</button>
+        <button onClick={login} disabled={authAction === "login"}>
+          {authAction === "login" ? "Logging in..." : "Login"}
+        </button>
+        <button onClick={register} disabled={authAction === "register"}>
+          {authAction === "register" ? "Registering..." : "Register"}
+        </button>
         {authError && (
           <p className="auth-error">{authError}</p>
         )}
