@@ -18,32 +18,35 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   async function scheduleReview(
     result: "forgot" | "help" | "solved" | "easy"
   ) {
-    const response = await fetch(
-      `${API_URL}/api/progress`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          problemId: problem.id,
-          result,
-        }),
+    try {
+      const response = await fetch(
+        `${API_URL}/api/progress`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            problemId: problem.id,
+            result,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Failed to save progress:", data);
+        setSaveError("Could not save progress. Please try again.");
+        return;
       }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Failed to save progress:", data);
-      setSaveError("Could not save progress. Please try again.");
-      return;
+      setSaveError("");
+      onComplete();
+    } catch {
+      setSaveError("Could not connect to the server. Please try again.");
     }
-    setSaveError("");
-    onComplete();
   }
-
   return (
     <div className="problem-card">
       <div className="problem-header">
@@ -160,4 +163,4 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   );
 }
 
-export default ProblemCard;
+export default ProblemCard; 
