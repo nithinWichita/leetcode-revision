@@ -6,12 +6,13 @@ const API_URL = import.meta.env.VITE_API_URL;
 function App() {
   const [authError, setAuthError] = useState("");
   const [authAction, setAuthAction] =
-    useState<"login" | "register" | null>(null); 
+    useState<"login" | "register" | null>(null);
   const [dailyBatchIds, setDailyBatchIds] = useState<number[]>([]);
   const [problems, setProblems] = useState<Problem[]>([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoadingData, setIsLoadingData] = useState(true);
+  const [dataError, setDataError] = useState("");
   const [isAuthenticated, setIsAuthenticated] =
     useState<boolean | null>(null);
   const logout = async () => {
@@ -34,13 +35,20 @@ function App() {
   };
   const [attemptedProblemIds, setAttemptedProblemIds] =
     useState<number[]>([]);
+
   useEffect(() => {
-    fetch(`${API_URL}/api/me`, {
-      credentials: "include",
-    }).then((response) => {
+  fetch(`${API_URL}/api/me`, {
+    credentials: "include",
+  })
+    .then((response) => {
       setIsAuthenticated(response.ok);
+    })
+    .catch(() => {
+      setIsAuthenticated(false);
+      setAuthError("Could not connect to the server.");
     });
-  }, []);
+}, []);
+
   useEffect(() => {
     if (!isAuthenticated) {
       return;
@@ -49,20 +57,9 @@ function App() {
 
 
     const loadData = async () => {
-      await Promise.all([
-        fetch(`${API_URL}/api/daily-batch`, {
-          credentials: "include",
-        })
-          .then((response) => {
-            if (!response.ok) {
-              return [];
-            }
-
-            return response.json();
-          })
-          .then((data) => {
-            setDailyBatchIds(data);
-          }), fetch(`${API_URL}/api/progress`, {
+      try {
+        await Promise.all([
+          fetch(`${API_URL}/api/daily-batch`, {
             credentials: "include",
           })
             .then((response) => {
@@ -73,27 +70,42 @@ function App() {
               return response.json();
             })
             .then((data) => {
-              setAttemptedProblemIds(
-                data.map((progress: { problem_id: number }) => progress.problem_id)
-              );
-            }),
-        fetch(`${API_URL}/api/problems`, {
-          credentials: "include",
-        })
-          .then((response) => {
-            if (!response.ok) {
-              return [];
-            }
+              setDailyBatchIds(data);
+            }), fetch(`${API_URL}/api/progress`, {
+              credentials: "include",
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  return [];
+                }
 
-            return response.json();
+                return response.json();
+              })
+              .then((data) => {
+                setAttemptedProblemIds(
+                  data.map((progress: { problem_id: number }) => progress.problem_id)
+                );
+              }),
+          fetch(`${API_URL}/api/problems`, {
+            credentials: "include",
           })
-          .then((data) => {
-            setProblems(data);
-          }),
+            .then((response) => {
+              if (!response.ok) {
+                return [];
+              }
 
-
-      ]);
-      setIsLoadingData(false);
+              return response.json();
+            })
+            .then((data) => {
+              setProblems(data);
+            }),  
+        ]);
+        setDataError("");   
+      } catch {
+        setDataError("Could not load your data. Please try again.");
+      } finally {
+        setIsLoadingData(false);
+      }
     };
     loadData();
   }, [isAuthenticated]);
@@ -132,7 +144,7 @@ function App() {
     }
   };
   const register = async () => {
-    setAuthAction("register");  
+    setAuthAction("register");
     const response = await fetch(
       `${API_URL}/api/auth/register`,
       {
@@ -202,6 +214,14 @@ function App() {
   if (isLoadingData) {
     return <p>Loading problems...</p>;
   }
+  if (dataError) {
+  return (
+    <div className="app">
+      <h1>LeetCode Revision</h1>
+      <p className="data-error">{dataError}</p>
+    </div>
+  );
+}
 
   return (
     <div className="app">
