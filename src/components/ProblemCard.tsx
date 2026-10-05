@@ -13,7 +13,7 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasOpenedProblem, setHasOpenedProblem] = useState(false);
   const [showPattern, setShowPattern] = useState(false);
-
+  const [saveError, setSaveError] = useState("");
 
   async function scheduleReview(
     result: "forgot" | "help" | "solved" | "easy"
@@ -37,9 +37,10 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
 
     if (!response.ok) {
       console.error("Failed to save progress:", data);
+      setSaveError("Could not save progress. Please try again.");
       return;
     }
-
+    setSaveError("");
     onComplete();
   }
 
@@ -151,6 +152,9 @@ function ProblemCard({ problem, isNew, onComplete }: ProblemCardProps) {
             Easy
           </button>
         </div>
+      )}
+      {saveError && (
+        <p className="save-error">{saveError}</p>
       )}
     </div>
   );

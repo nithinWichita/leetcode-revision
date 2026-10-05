@@ -133,7 +133,11 @@
   font-weight: 600;
   text-decoration: none;
 }
-
+.save-error {
+  color: #dc2626;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
 .app {
   max-width: 800px;
   margin: 0 auto;
