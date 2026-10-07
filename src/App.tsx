@@ -37,78 +37,85 @@ function App() {
     useState<number[]>([]);
 
   useEffect(() => {
-  fetch(`${API_URL}/api/me`, {
-    credentials: "include",
-  })
-    .then((response) => {
-      setIsAuthenticated(response.ok);
+    fetch(`${API_URL}/api/me`, {
+      credentials: "include",
     })
-    .catch(() => {
-      setIsAuthenticated(false);
-      setAuthError("Could not connect to the server.");
-    });
-}, []);
+      .then((response) => {
+        setIsAuthenticated(response.ok);
+      })
+      .catch(() => {
+        setIsAuthenticated(false);
+        setAuthError("Could not connect to the server.");
+      });
+  }, []);
+  const retryLoadData = () => {
+  setIsLoadingData(true);
+  setDataError("");
+  loadData();
+};
+  const loadData = async () => {
+    
+    try {
+      await Promise.all([
+        fetch(`${API_URL}/api/daily-batch`, {
+          credentials: "include",
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return [];
+            }
+
+            return response.json();
+          })
+          .then((data) => {
+            setDailyBatchIds(data);
+          }), fetch(`${API_URL}/api/progress`, {
+            credentials: "include",
+          })
+            .then((response) => {
+              if (!response.ok) {
+                return [];
+              }
+
+              return response.json();
+            })
+            .then((data) => {
+              setAttemptedProblemIds(
+                data.map((progress: { problem_id: number }) => progress.problem_id)
+              );
+            }),
+        fetch(`${API_URL}/api/problems`, {
+          credentials: "include",
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return [];
+            }
+
+            return response.json();
+          })
+          .then((data) => {
+            setProblems(data);
+          }),
+      ]);
+      setDataError("");
+    } catch {
+      setDataError("Could not load your data. Please try again.");
+    } finally {
+      setIsLoadingData(false);
+    }
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
       return;
     }
-
-
-
-    const loadData = async () => {
-      try {
-        await Promise.all([
-          fetch(`${API_URL}/api/daily-batch`, {
-            credentials: "include",
-          })
-            .then((response) => {
-              if (!response.ok) {
-                return [];
-              }
-
-              return response.json();
-            })
-            .then((data) => {
-              setDailyBatchIds(data);
-            }), fetch(`${API_URL}/api/progress`, {
-              credentials: "include",
-            })
-              .then((response) => {
-                if (!response.ok) {
-                  return [];
-                }
-
-                return response.json();
-              })
-              .then((data) => {
-                setAttemptedProblemIds(
-                  data.map((progress: { problem_id: number }) => progress.problem_id)
-                );
-              }),
-          fetch(`${API_URL}/api/problems`, {
-            credentials: "include",
-          })
-            .then((response) => {
-              if (!response.ok) {
-                return [];
-              }
-
-              return response.json();
-            })
-            .then((data) => {
-              setProblems(data);
-            }),  
-        ]);
-        setDataError("");   
-      } catch {
-        setDataError("Could not load your data. Please try again.");
-      } finally {
-        setIsLoadingData(false);
-      }
-    };
     loadData();
   }, [isAuthenticated]);
+
+
+
+
   const isNewProblem = (problemId: number) => {
     return !attemptedProblemIds.includes(problemId);
   };
@@ -215,13 +222,14 @@ function App() {
     return <p>Loading problems...</p>;
   }
   if (dataError) {
-  return (
-    <div className="app">
-      <h1>LeetCode Revision</h1>
-      <p className="data-error">{dataError}</p>
-    </div>
-  );
-}
+    return (
+      <div className="app">
+        <h1>LeetCode Revision</h1>
+        <p className="data-error">{dataError}</p>
+        <button onClick={retryLoadData}>Try Again</button>
+      </div>
+    );
+  }
 
   return (
     <div className="app">
