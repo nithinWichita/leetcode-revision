@@ -35,7 +35,23 @@ function App() {
   };
   const [attemptedProblemIds, setAttemptedProblemIds] =
     useState<number[]>([]);
+  const checkAuth = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/me`, {
+        credentials: "include",
+      });
 
+      if (response.ok) {
+        setAuthError("");
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    } catch {
+      setIsAuthenticated(false);
+      setAuthError("Could not connect to the server.");
+    }
+  };
   useEffect(() => {
     fetch(`${API_URL}/api/me`, {
       credentials: "include",
@@ -49,12 +65,12 @@ function App() {
       });
   }, []);
   const retryLoadData = () => {
-  setIsLoadingData(true);
-  setDataError("");
-  loadData();
-};
+    setIsLoadingData(true);
+    setDataError("");
+    loadData();
+  };
   const loadData = async () => {
-    
+
     try {
       await Promise.all([
         fetch(`${API_URL}/api/daily-batch`, {
@@ -214,6 +230,9 @@ function App() {
         </button>
         {authError && (
           <p className="auth-error">{authError}</p>
+        )}
+        {authError === "Could not connect to the server." && (
+          <button onClick={checkAuth}>Retry Connection</button>
         )}
       </div>
     );
