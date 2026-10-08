@@ -33,11 +33,11 @@ if (!JWT_SECRET) {
   throw new Error("JWT_SECRET is not defined");
 }
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const { Pool } = pg;
 
 const pool = new Pool({
-  database: process.env.DATABASE_NAME,
+  connectionString: process.env.DATABASE_URL,
 });
 
 
